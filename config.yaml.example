@@ -1,0 +1,62 @@
+# GMGN Tracker 配置文件示例
+# 复制此文件为 config.yaml 并根据需要修改
+
+gmgn:
+  base_url: "https://gmgn.ai"
+  timeout_seconds: 30
+  rate_limit_per_minute: 60
+
+filters:
+  # 7天最小收益率 (%)
+  min_roi_7d: 50.0
+
+  # 30天最小收益率 (%)
+  min_roi_30d: 100.0
+
+  # 最小胜率 (%)
+  min_win_rate: 60.0
+
+  # 最大回撤 (%)
+  max_drawdown: 30.0
+
+  # 最小交易次数
+  min_trade_count: 10
+
+  # 是否要求持仓多样化
+  require_diversification: true
+
+  # 最小多样性分数 (0.0-1.0)
+  min_diversification_score: 0.6
+
+risk:
+  # 是否要求 LP 已销毁
+  require_lp_burned: true
+
+  # 是否屏蔽蜜罐合约
+  block_honeypot: true
+
+  # 是否屏蔽可增发代币
+  block_mintable: true
+
+  # 最小流动性 (USD)
+  min_liquidity_usd: 10000.0
+
+  # 最大风险分数 (0-100)
+  max_risk_score: 50
+
+cache:
+  # 缓存有效期 (秒)
+  ttl_seconds: 300
+
+  # 最大缓存大小 (MB)
+  max_size_mb: 100
+
+  # 缓存目录
+  cache_dir: ".cache"
+
+logging:
+  # 日志级别: trace, debug, info, warn, error
+  level: "info"
+
+  # 日志文件路径 (null 表示只输出到终端)
+  file: "gmgn-tracker.log"
