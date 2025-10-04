@@ -53,6 +53,10 @@ pub enum Commands {
         /// 输出格式 (table, json, csv)
         #[arg(short = 'f', long, default_value = "table")]
         format: String,
+
+        /// 使用模拟数据 (用于开发和演示)
+        #[arg(long)]
+        mock: bool,
     },
 
     /// 查看钱包详细信息

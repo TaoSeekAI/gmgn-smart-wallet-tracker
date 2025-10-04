@@ -40,6 +40,7 @@ async fn main() -> Result<()> {
             min_trades,
             limit,
             format,
+            mock,
         } => {
             handle_scan(
                 &config,
@@ -51,6 +52,7 @@ async fn main() -> Result<()> {
                 *min_trades,
                 *limit,
                 format,
+                *mock,
             )
             .await?;
         }
@@ -107,6 +109,7 @@ async fn handle_scan(
     min_trades: Option<u32>,
     limit: usize,
     format: &str,
+    mock: bool,
 ) -> Result<()> {
     use models::Chain;
     use tracker::{WalletFilter, WalletTracker};
@@ -134,19 +137,25 @@ async fn handle_scan(
 
     let filter = WalletFilter::from(filter_config);
 
-    // 创建 API 客户端
-    let client = api::GmgnClient::new(
-        config.gmgn.base_url.clone(),
-        config.gmgn.timeout_seconds,
-    )?;
+    // 获取钱包列表
+    let wallets = if mock {
+        println!("🎭 使用模拟数据模式...");
+        api::MockDataGenerator::generate_wallets(&chain, 50)?
+    } else {
+        // 创建 API 客户端
+        let client = api::GmgnClient::new(
+            config.gmgn.base_url.clone(),
+            config.gmgn.timeout_seconds,
+        )?;
 
-    // 创建追踪器
-    let tracker = WalletTracker::new(filter, client);
+        // 创建追踪器
+        let tracker = WalletTracker::new(filter, client);
 
-    println!("🔍 正在扫描 {} 链上的智能钱包...", chain);
+        println!("🔍 正在扫描 {} 链上的智能钱包...", chain);
 
-    // 扫描钱包
-    let wallets = tracker.scan_smart_wallets(&chain).await?;
+        // 扫描钱包
+        tracker.scan_smart_wallets(&chain).await?
+    };
 
     if wallets.is_empty() {
         println!("❌ 未找到符合条件的钱包");
