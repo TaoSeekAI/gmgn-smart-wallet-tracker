@@ -43,12 +43,21 @@
 
 ### 快速开始
 
+#### 重要说明
+
+**API 访问限制**: GMGN.ai 的数据爬取 API 需要 IP 白名单,因此本工具提供了两种模式:
+
+1. **模拟数据模式** (推荐用于测试): 使用 `--mock` 标志生成模拟数据,无需 API 访问权限
+2. **实时 API 模式**: 需要在 GMGN.ai 有交易历史并申请 IP 白名单
+
+详细的 API 访问问题解决方案,请参阅 [TROUBLESHOOTING.md](./TROUBLESHOOTING.md)
+
 #### 安装
 
 1. 克隆仓库:
 ```bash
-git clone https://github.com/yourusername/gmgn-tracker.git
-cd gmgn-tracker
+git clone https://github.com/TaoSeekAI/gmgn-smart-wallet-tracker.git
+cd gmgn-smart-wallet-tracker
 ```
 
 2. 构建项目:
@@ -65,7 +74,10 @@ export PATH=$PATH:$(pwd)/target/release
 
 1. **扫描智能钱包**
 ```bash
-# 扫描 Solana 链上的智能钱包
+# 使用模拟数据模式(无需 API 访问权限)
+gmgn-tracker scan --chain solana --mock
+
+# 扫描 Solana 链上的智能钱包(需要 API 访问权限)
 gmgn-tracker scan --chain solana
 
 # 自定义筛选条件
@@ -76,7 +88,8 @@ gmgn-tracker scan \
   --min-win-rate 60 \
   --max-drawdown 30 \
   --min-trades 10 \
-  --limit 20
+  --limit 20 \
+  --mock
 ```
 
 2. **查看钱包详情**
@@ -236,11 +249,23 @@ A Rust-based CLI tool for tracking and analyzing smart money wallets on GMGN.ai 
 
 ### Quick Start
 
+#### Important Notice
+
+**API Access Limitation**: GMGN.ai's data crawling APIs require IP whitelist. This tool provides two modes:
+
+1. **Mock Data Mode** (Recommended for testing): Use `--mock` flag to generate mock data without API access
+2. **Live API Mode**: Requires transaction history on GMGN.ai and IP whitelist application
+
+For detailed API access troubleshooting, see [TROUBLESHOOTING.md](./TROUBLESHOOTING.md)
+
 ```bash
 # Build the project
 cargo build --release
 
-# Scan smart wallets
+# Scan smart wallets with mock data (no API access needed)
+./target/release/gmgn-tracker scan --chain solana --mock
+
+# Scan smart wallets with real API (requires whitelist)
 ./target/release/gmgn-tracker scan --chain solana
 
 # Check token security
